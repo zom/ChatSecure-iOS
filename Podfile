@@ -49,6 +49,7 @@ pod 'JTSImageViewController', '~> 1.4'
 pod 'KVOController', '~> 1.0'
 # pod 'XLForm', '~> 3.0' # Need to use bundle fork
 # pod 'ParkedTextField', '~> 0.1' # Need to use Swift 2.0 fork
+pod 'libsodium', '~> 1.0'
 
 # QR Codes
 pod 'QRCodeReaderViewController', '~> 3.5.0'

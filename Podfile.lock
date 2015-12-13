@@ -58,6 +58,7 @@ PODS:
   - JTTargetActionBlock (1.0.0)
   - JVFloatLabeledTextField (1.1.0)
   - KVOController (1.0.3)
+  - libsodium (1.0.3)
   - libsqlfs/common (1.3)
   - libsqlfs/SQLCipher (1.3):
     - libsqlfs/common
@@ -264,6 +265,7 @@ DEPENDENCIES:
   - JTTargetActionBlock (~> 1.0)
   - JVFloatLabeledTextField (~> 1.0)
   - KVOController (~> 1.0)
+  - libsodium (~> 1.0)
   - Mantle (~> 2.0)
   - MBProgressHUD (~> 0.9)
   - MWFeedParser (~> 1.0)
@@ -337,6 +339,7 @@ SPEC CHECKSUMS:
   JTTargetActionBlock: 6e9201e5fa88651deb354c91b7c9c6487a1abe55
   JVFloatLabeledTextField: ea4a3d8387ddd43724c472bb2b8ab39b79af05d4
   KVOController: 9fd8f0343670994e4b6f9f0b31f5a45663f3e1cf
+  libsodium: be547e31dc75725629acc5717dc0a40fc05ef243
   libsqlfs: 179e4fb40b8c07fd0ee7933ec4c0b9f4815cbd0e
   Mantle: 1912395033f601de5adc8ee91e48f46e4c7051ad
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad

@@ -32,10 +32,11 @@
     NSString *baseUrl = @"https://chatsecure.org/i/#";
     NSString *fingerprint = @"fingerprint";
     
-    NSURL *url = [NSURL otr_shareLink:baseUrl username:username fingerprint:fingerprint base64Encoded:NO];
-    NSURL *urlWithOutFingerprint = [NSURL otr_shareLink:baseUrl username:username fingerprint:nil base64Encoded:NO];
-    NSURL *base64URL = [NSURL otr_shareLink:baseUrl username:username fingerprint:fingerprint base64Encoded:YES];
-    NSURL *base64URLWithoutFingerprint = [NSURL otr_shareLink:baseUrl username:username fingerprint:nil base64Encoded:YES];
+
+    NSURL *url = [NSURL otr_shareLink:baseUrl username:username fingerprints:@{@"otr": fingerprint} base64Encoded:NO];
+    NSURL *urlWithOutFingerprint = [NSURL otr_shareLink:baseUrl username:username fingerprints:nil base64Encoded:NO];
+    NSURL *base64URL = [NSURL otr_shareLink:baseUrl username:username fingerprints:@{@"otr": fingerprint} base64Encoded:YES];
+    NSURL *base64URLWithoutFingerprint = [NSURL otr_shareLink:baseUrl username:username fingerprints:nil base64Encoded:YES];
     
     void (^block)(NSString *, NSString *) = ^void(NSString *uName, NSString *fPrint) {
         BOOL equalUsername = [username isEqualToString:uName];
