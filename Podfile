@@ -49,12 +49,11 @@ pod 'JTSImageViewController', '~> 1.4'
 pod 'KVOController', '~> 1.0'
 # pod 'XLForm', '~> 3.0' # Need to use bundle fork
 # pod 'ParkedTextField', '~> 0.1' # Need to use Swift 2.0 fork
-pod 'libsodium', '~> 1.0'
+pod 'Base32', '~> 1.0'
 
 # QR Codes
 pod 'QRCodeReaderViewController', '~> 3.5.0'
 pod 'ZXingObjC', '~> 3.0'
-
 
 # Local Podspecs
 pod 'gtm-http-fetcher', :podspec => 'Podspecs/gtm-http-fetcher.podspec'
@@ -63,6 +62,9 @@ pod 'SQLCipher/fts', :podspec => 'Podspecs/SQLCipher.podspec.json'
 
 # Forks
 pod 'JSQMessagesViewController', :git => 'https://github.com/ChatSecure/JSQMessagesViewController', :branch => '7.2.0-send_button'
+
+# libsodium + Swift
+pod 'Sodium', :git => 'https://github.com/jedisct1/swift-sodium.git', :commit => '9c769329708266f876af1ff80704b00a33c885c9'
 
 # Submodules
 pod 'ProxyKit/Client', :path => 'Submodules/ProxyKit/ProxyKit.podspec'

@@ -10,5 +10,6 @@ DerivedData
 *.xccheckout
 
 /Pods/
+/Carthage/
 
 Secrets.plist
