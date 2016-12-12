@@ -9,6 +9,7 @@
 #import "OTRComposeViewController.h"
 
 #import "OTRBuddy.h"
+#import "OTRXMPPBuddy.h"
 #import "OTRAccount.h"
 #import "OTRDatabaseView.h"
 #import "OTRLog.h"
@@ -441,7 +442,9 @@ static CGFloat OTRBuddyInfoCellHeight = 80.0;
     else {
         NSIndexPath *databaseIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
         OTRBuddy * buddy = [self buddyAtIndexPath:databaseIndexPath withTableView:tableView];
-        if (self.selectionModeIsSingle == YES) {
+        if ([buddy isKindOfClass:[OTRXMPPBuddy class]] && ((OTRXMPPBuddy*)buddy).isPendingApproval) {
+            return;
+        } else if (self.selectionModeIsSingle == YES) {
             NSSet <NSString *>*buddySet = [NSSet setWithObject:buddy.uniqueId];
             [self completeSelectingBuddies:buddySet groupName:nil];
         } else {
