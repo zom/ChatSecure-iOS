@@ -571,7 +571,8 @@
 #pragma mark UNUserNotificationCenterDelegate methods (iOS 10+)
 
 - (void) userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
-    if ([notification.request.content.threadIdentifier isEqualToString:[self activeThreadYapKey]]) {
+    NSString *threadId = [self activeThread].threadIdentifier;
+    if ([notification.request.content.threadIdentifier isEqualToString:threadId]) {
         completionHandler(UNNotificationPresentationOptionNone);
     } else {
         completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert);
