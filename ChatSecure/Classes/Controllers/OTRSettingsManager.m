@@ -91,7 +91,7 @@
     fingerprintSetting.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     
-    if (![OTRNotificationPermissions canSendNotifications] ||
+    if (![PushController canReceivePushNotifications] ||
         [PushController getPushPreference] != PushPreferenceEnabled) {
         OTRViewSetting *pushViewSetting = [[OTRViewSetting alloc] initWithTitle:CHATSECURE_PUSH_STRING description:nil viewControllerClass:[EnablePushViewController class]];
         pushViewSetting.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
