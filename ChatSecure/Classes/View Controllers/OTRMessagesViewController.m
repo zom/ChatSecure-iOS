@@ -1281,21 +1281,25 @@ typedef NS_ENUM(int, OTRDropDownType) {
     ////// Delivered Icon //////
     if([message isKindOfClass:[OTRMessage class]]) {
         OTRMessage *msg = (OTRMessage *)message;
+        
+        // Only apply checkmarks to outgoing messages
+        if (!msg.isIncoming) {
 #warning Zom-specific hack - Double Checkmark
-        // This is a temporary hack so Zom shows two checkmarks for delivery
-        // and one if there was no error attached to the message.
-        NSString *checkmarkString = [NSString stringWithFormat:@"%@",[NSString fa_stringForFontAwesomeIcon:FACheck]];
-        NSMutableString *iconString = [NSMutableString string];
-        if (!msg.error) {
-            [iconString appendString:checkmarkString];
-        }
-        if (msg.isDelivered) {
-            [iconString appendString:checkmarkString];
-        }
-        if (iconString.length) {
-            [iconString appendString:@" "];
-            NSAttributedString *attrIconString = [[NSAttributedString alloc] initWithString:iconString attributes:iconAttributes];
-            [attributedString appendAttributedString:attrIconString];
+            // This is a temporary hack so Zom shows two checkmarks for delivery
+            // and one if there was no error attached to the message.
+            NSString *checkmarkString = [NSString stringWithFormat:@"%@",[NSString fa_stringForFontAwesomeIcon:FACheck]];
+            NSMutableString *iconString = [NSMutableString string];
+            if (!msg.error) {
+                [iconString appendString:checkmarkString];
+            }
+            if (msg.isDelivered) {
+                [iconString appendString:checkmarkString];
+            }
+            if (iconString.length) {
+                [iconString appendString:@" "];
+                NSAttributedString *attrIconString = [[NSAttributedString alloc] initWithString:iconString attributes:iconAttributes];
+                [attributedString appendAttributedString:attrIconString];
+            }
         }
         
         if([msg isMediaMessage]) {
