@@ -463,31 +463,27 @@ typedef NS_ENUM(int, OTRDropDownType) {
             [self addLockSpinner];
         }
         else {
-            UIBarButtonItem * rightBarItem = self.navigationItem.rightBarButtonItem;
-            if ([rightBarItem isEqual:self.lockBarButtonItem]) {
+            [[OTRProtocolManager sharedInstance].encryptionManager currentEncryptionState:self.buddy.username accountName:self.account.username protocol:self.account.protocolTypeString completion:^(BOOL isTrusted, BOOL hasVerifiedFingerprints, OTRKitMessageState messageState) {
                 
-                [[OTRProtocolManager sharedInstance].encryptionManager currentEncryptionState:self.buddy.username accountName:self.account.username protocol:self.account.protocolTypeString completion:^(BOOL isTrusted, BOOL hasVerifiedFingerprints, OTRKitMessageState messageState) {
-                    
-                    //Set correct lock icon and status
-                    if (messageState == OTRKitMessageStateEncrypted && isTrusted) {
-                        self.lockButton.lockStatus = OTRLockStatusLockedAndVerified;
-                    }
-                    else if (messageState == OTRKitMessageStateEncrypted && hasVerifiedFingerprints)
-                    {
-                        self.lockButton.lockStatus = OTRLockStatusLockedAndError;
-                    }
-                    else if (messageState == OTRKitMessageStateEncrypted) {
-                        self.lockButton.lockStatus = OTRLockStatusLockedAndWarn;
-                    }
-                    else {
-                        self.lockButton.lockStatus = OTRLockStatusUnlocked;
-                    }
-                    
-                    self.state.isEncrypted = messageState == OTRKitMessageStateEncrypted;
-                    [self didUpdateState];
-                    
-                } completionQueue:nil];
-            }
+                //Set correct lock icon and status
+                if (messageState == OTRKitMessageStateEncrypted && isTrusted) {
+                    self.lockButton.lockStatus = OTRLockStatusLockedAndVerified;
+                }
+                else if (messageState == OTRKitMessageStateEncrypted && hasVerifiedFingerprints)
+                {
+                    self.lockButton.lockStatus = OTRLockStatusLockedAndError;
+                }
+                else if (messageState == OTRKitMessageStateEncrypted) {
+                    self.lockButton.lockStatus = OTRLockStatusLockedAndWarn;
+                }
+                else {
+                    self.lockButton.lockStatus = OTRLockStatusUnlocked;
+                }
+                
+                self.state.isEncrypted = messageState == OTRKitMessageStateEncrypted;
+                [self didUpdateState];
+                
+            } completionQueue:nil];
         }
     }];
 }
