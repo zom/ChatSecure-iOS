@@ -14,6 +14,7 @@
 #import "OTRXMPPRoomYapStorage.h"
 #import "XMPPIDTracker.h"
 #import "OTRBuddy.h"
+#import "OTRXMPPBuddy.h"
 #import "XMPPMUC.h"
 #import "XMPPRoom.h"
 #import "NSDate+XMPPDateTimeProfiles.h"
