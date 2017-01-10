@@ -14,6 +14,7 @@
 		633107201A16D1A300C17BAE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 633106661A16D1A300C17BAE /* LaunchScreen.xib */; };
 		6331072B1A16D1F200C17BAE /* DemoImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 633107291A16D1F200C17BAE /* DemoImages.xcassets */; };
 		6331072C1A16D1F200C17BAE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6331072A1A16D1F200C17BAE /* Images.xcassets */; };
+		6334C0171E247E5100BA9359 /* OTRXMPPChangePasswordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6334C0161E247E5100BA9359 /* OTRXMPPChangePasswordManager.swift */; };
 		63363FAE1CCAE29B00B0C720 /* OTRYapExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63363FAD1CCAE29B00B0C720 /* OTRYapExtensions.swift */; };
 		634043191BD5AAF300ECA95A /* OTRBuddyEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 634043181BD5AAF300ECA95A /* OTRBuddyEnums.h */; };
 		6340431B1BD5BCD800ECA95A /* OTRXMPPRoomMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6340431A1BD5BCD800ECA95A /* OTRXMPPRoomMessage.swift */; };
@@ -675,6 +676,7 @@
 		6331D3B91B4F3C6E00C85365 /* OTRAddBuddyQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OTRAddBuddyQRCodeViewController.m; path = Onboarding/OTRAddBuddyQRCodeViewController.m; sourceTree = "<group>"; };
 		6331D3BB1B4F41AF00C85365 /* OTRQRCodeReaderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OTRQRCodeReaderDelegate.h; sourceTree = "<group>"; };
 		6331D3BC1B4F41AF00C85365 /* OTRQRCodeReaderDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OTRQRCodeReaderDelegate.m; sourceTree = "<group>"; };
+		6334C0161E247E5100BA9359 /* OTRXMPPChangePasswordManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTRXMPPChangePasswordManager.swift; sourceTree = "<group>"; };
 		633620971A76E87B006E8739 /* OTRImageItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OTRImageItem.h; sourceTree = "<group>"; };
 		633620981A76E87B006E8739 /* OTRImageItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OTRImageItem.m; sourceTree = "<group>"; };
 		6336209A1A76E88C006E8739 /* OTRVideoItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OTRVideoItem.h; sourceTree = "<group>"; };
@@ -995,6 +997,7 @@
 				63E353F51BB9E41D005C54C3 /* OTRPushTLVHandlerProtocols.h */,
 				634905AF1BD05E3900347FE2 /* OTRYapViewHandler.swift */,
 				63AB1A061C0D116A005FA351 /* OTRSplitViewCoordinator.swift */,
+				6334C0161E247E5100BA9359 /* OTRXMPPChangePasswordManager.swift */,
 				633105321A16D1A300C17BAE /* XMPP */,
 			);
 			path = Controllers;
@@ -2263,6 +2266,7 @@
 				D93DDADF1BA79A2700CD8331 /* OTRYapDatabaseObject.m in Sources */,
 				D93DDAE01BA79A2700CD8331 /* OTRCertificatePinning.m in Sources */,
 				63564E101BBB1C5200EB4CA6 /* PushStorage.swift in Sources */,
+				6334C0171E247E5100BA9359 /* OTRXMPPChangePasswordManager.swift in Sources */,
 				D93DDAE11BA79A2700CD8331 /* OTRChatDemo.m in Sources */,
 				D93DDAE21BA79A2700CD8331 /* OTRColors.m in Sources */,
 				D93DDAE41BA79A2700CD8331 /* OTRImages.m in Sources */,
