@@ -36,6 +36,7 @@
 @property (nonatomic, strong) OTRXMPPBuddyManager* xmppBuddyManager;
 
 @property (nonatomic, strong) OMEMOModule *omemoModule;
+@property (nonatomic, strong) OTRXMPPChangePasswordManager *changePasswordManager;
 
 
 @property (nonatomic, strong) YapDatabaseConnection *databaseConnection;

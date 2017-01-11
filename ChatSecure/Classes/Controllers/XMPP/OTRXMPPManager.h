@@ -25,14 +25,6 @@
 @import XMPPFramework;
 #import "OTRBuddy.h"
 #import "OTRMessage.h"
-#import "XMPPFramework.h"
-#import "XMPPReconnect.h"
-#import "XMPPRoster.h"
-#import "XMPPCoreDataStorage.h"
-#import "XMPPRosterCoreDataStorage.h"
-#import "XMPPvCardCoreDataStorage.h"
-#import "XMPPCapabilities.h"
-#import "XMPPCapabilitiesCoreDataStorage.h"
 #import "OTRProtocol.h"
 #import "OTRXMPPBudyTimers.h"
 #import "OTRCertificatePinning.h"
@@ -68,6 +60,8 @@
 
 // Delivery receipts
 - (void) sendDeliveryReceiptForMessage:(OTRMessage*)message;
+
+- (void)changePassword:(NSString *)newPassword completion:(void (^)(BOOL,NSError*))completion;
 
 @end
 
