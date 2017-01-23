@@ -26,24 +26,12 @@
 - (instancetype)initWithDatabaseConnection:(YapDatabaseConnection *)connection
 {
     if (self = [self init]) {
-        self.databaseConnection = connection;
+        _databaseConnection = connection;
+        _moduleDelegateQueue = dispatch_queue_create("OTRXMPPMessageYapStroage-delegateQueue", 0);
     }
     return self;
 }
 
-- (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)xmppMessage
-{
-    [self storeMessage:xmppMessage stream:sender incoming:YES];
-}
-
-- (void)storeMessage:(XMPPMessage *)xmppMessage stream:(XMPPStream *)stream incoming:(BOOL)incoming
-{
-    if ([xmppMessage isMessageCarbon]) {
-        [self handleCarbonMessage:xmppMessage stream:stream];
-    } else {
-        [self handleMessage:xmppMessage stream:stream incoming:incoming];
-    }
-}
 
 - (OTRXMPPBuddy *)buddyForUsername:(NSString *)username stream:(XMPPStream *)stream transaction:(YapDatabaseReadTransaction *)transaction
 {
@@ -68,8 +56,32 @@
     return message;
 }
 
-- (void)handleMessage:(XMPPMessage *)xmppMessage stream:(XMPPStream *)stream incoming:(BOOL)incoming;
+- (OTROutgoingMessage *)outgoingMessageFromXMPPMessage:(XMPPMessage *)xmppMessage buddyId:(NSString *)buddyId {
+    OTROutgoingMessage *outgoingMessage = (OTROutgoingMessage *)[self baseMessageFromXMPPMessage:xmppMessage buddyId:buddyId class:[OTROutgoingMessage class]];
+    // Fill in current data so it looks like this 'outgoing' message was really sent (but of course this is a message we received through carbons).
+    outgoingMessage.dateSent = [NSDate date];
+    return outgoingMessage;
+}
+
+- (OTRIncomingMessage *)incomingMessageFromXMPPMessage:(XMPPMessage *)xmppMessage buddyId:(NSString *)buddyId
 {
+    return (OTRIncomingMessage *)[self baseMessageFromXMPPMessage:xmppMessage buddyId:buddyId class:[OTRIncomingMessage class]];
+}
+
+- (void)xmppStream:(XMPPStream *)stream didReceiveMessage:(XMPPMessage *)xmppMessage
+{
+    // We don't handle incoming group chat messages here
+    // Check out OTRXMPPRoomYapStorage instead
+    if ([[xmppMessage type] isEqualToString:@"groupchat"] ||
+        [xmppMessage elementForName:@"x" xmlns:XMPPMUCUserNamespace] ||
+        [xmppMessage elementForName:@"x" xmlns:@"jabber:x:conference"]) {
+        return;
+    }
+    
+    if ([xmppMessage isMessageCarbon]) {
+        return;
+    }
+    
     [self.databaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
         
         if ([stream.tag isKindOfClass:[NSString class]]) {
@@ -166,17 +178,15 @@
     return result;
 }
 
-- (void)handleCarbonMessage:(XMPPMessage *)xmppMessage stream:(XMPPStream *)stream
+- (void)handleCarbonMessage:(XMPPMessage *)forwardedMessage stream:(XMPPStream *)stream outgoing:(BOOL)isOutgoing
 {
     //Sent Message Carbons are sent by our account to another
     //So from is our JID and to is buddy
-    BOOL incoming = NO;
-    XMPPMessage *forwardedMessage = [xmppMessage messageCarbonForwardedMessage];
+    BOOL incoming = !isOutgoing;
     
     NSString *username = nil;
-    if ([xmppMessage isReceivedMessageCarbon]) {
+    if (incoming) {
         username = [[forwardedMessage from] bare];
-        incoming = YES;
     } else {
         username = [[forwardedMessage to] bare];
     }
@@ -206,6 +216,13 @@
             }
         }
     }];
+}
+
+#pragma - mark XMPPMessageCarbonsDelegate
+
+- (void)xmppMessageCarbons:(XMPPMessageCarbons *)xmppMessageCarbons didReceiveMessage:(XMPPMessage *)message outgoing:(BOOL)isOutgoing
+{
+    [self handleCarbonMessage:message stream:xmppMessageCarbons.xmppStream outgoing:isOutgoing];
 }
 
 @end

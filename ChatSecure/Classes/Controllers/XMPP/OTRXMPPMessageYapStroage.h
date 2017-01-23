@@ -12,7 +12,8 @@
 
 @interface OTRXMPPMessageYapStroage : XMPPModule
 
-@property (nonatomic, strong) YapDatabaseConnection *databaseConnection;
+@property (nonatomic, strong, readonly) YapDatabaseConnection *databaseConnection;
+@property (nonatomic, readonly) dispatch_queue_t moduleDelegateQueue;
 
 - (instancetype)initWithDatabaseConnection:(YapDatabaseConnection *)connection;
 
