@@ -56,18 +56,6 @@
     return message;
 }
 
-- (OTROutgoingMessage *)outgoingMessageFromXMPPMessage:(XMPPMessage *)xmppMessage buddyId:(NSString *)buddyId {
-    OTROutgoingMessage *outgoingMessage = (OTROutgoingMessage *)[self baseMessageFromXMPPMessage:xmppMessage buddyId:buddyId class:[OTROutgoingMessage class]];
-    // Fill in current data so it looks like this 'outgoing' message was really sent (but of course this is a message we received through carbons).
-    outgoingMessage.dateSent = [NSDate date];
-    return outgoingMessage;
-}
-
-- (OTRIncomingMessage *)incomingMessageFromXMPPMessage:(XMPPMessage *)xmppMessage buddyId:(NSString *)buddyId
-{
-    return (OTRIncomingMessage *)[self baseMessageFromXMPPMessage:xmppMessage buddyId:buddyId class:[OTRIncomingMessage class]];
-}
-
 - (void)xmppStream:(XMPPStream *)stream didReceiveMessage:(XMPPMessage *)xmppMessage
 {
     // We don't handle incoming group chat messages here
