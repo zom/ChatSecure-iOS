@@ -510,6 +510,21 @@ NSString *const OTRXMPPLoginErrorKey = @"OTRXMPPLoginErrorKey";
 }
 
 #pragma mark Public Methods
+- (void)setAvatar:(NSData *)data completion:(void (^)(BOOL))completion
+{
+    if (![data length]) {
+        completion(NO);
+        return;
+    }
+    self.changeAvatar = [[OTRXMPPChangeAvatar alloc] initWithPhotoData:data
+                                                   xmppvCardTempModule:self.xmppvCardTempModule];
+    
+    __weak typeof(self) weakSelf = self;
+    [self.changeAvatar updatePhoto:^(BOOL success) {
+        completion(success);
+        weakSelf.changeAvatar = nil;
+    }];
+}
 
 - (void)changePassword:(NSString *)newPassword completion:(void (^)(BOOL,NSError*))completion {
     if (!completion) {
