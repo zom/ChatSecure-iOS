@@ -63,7 +63,7 @@
 
 - (void)changePassword:(NSString *)newPassword completion:(void (^)(BOOL,NSError*))completion;
 
-- (void)setAvatar:(NSData *)data completion:(void (^)(BOOL))completion;
+- (void)setAvatar:(UIImage *)newImage completion:(void (^)(BOOL))completion;
 
 @end
 

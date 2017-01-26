@@ -64,6 +64,7 @@
 #import "OTRXMPPBudyTimers.h"
 #import "OTRXMPPError.h"
 #import "OTRXMPPManager_Private.h"
+#import "UIImage+ChatSecure.h"
 @import OTRAssets;
 #import "XMPPIQ+XEP_0357.h"
 
@@ -509,13 +510,18 @@ NSString *const OTRXMPPLoginErrorKey = @"OTRXMPPLoginErrorKey";
     return YES;
 }
 
-#pragma mark Public Methods
-- (void)setAvatar:(NSData *)data completion:(void (^)(BOOL))completion
+- (void)setAvatar:(UIImage *)newImage completion:(void (^)(BOOL))completion
 {
-    if (![data length]) {
+    if (!newImage) {
         completion(NO);
         return;
     }
+    
+    //Square crop & Resize image
+    newImage = [UIImage otr_prepareForAvatarUpload:newImage maxSize:120.0];
+    //jpeg compression
+    NSData *data = UIImageJPEGRepresentation(newImage, 0.6);
+    
     self.changeAvatar = [[OTRXMPPChangeAvatar alloc] initWithPhotoData:data
                                                    xmppvCardTempModule:self.xmppvCardTempModule];
     
