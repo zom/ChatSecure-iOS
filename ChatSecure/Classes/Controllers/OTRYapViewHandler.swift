@@ -153,11 +153,15 @@ public class OTRYapViewHandler: NSObject {
     func yapDatbaseModified(notification:NSNotification) {
         let notifications = self.databaseConnection.beginLongLivedReadTransaction()
         
+        for (_,value) in self.keyCollectionObserver.storage {
+            if self.databaseConnection.hasChangeForKey(value.key, inCollection: value.collection, inNotifications: notifications) {
+                self.delegate?.didReceiveChanges?(self, key: value.key, collection: value.collection)
+            }
+        }
+        
         guard let mappings = self.mappings else {
-            if let view = self.viewName {
-                if let groups = self.groups {
-                    self.setupMappings(view, groups: groups);
-                }
+            if let view = self.viewName, let groups = self.groups {
+                self.setupMappings(view, groups: groups);
             }
             return
         }
@@ -176,12 +180,6 @@ public class OTRYapViewHandler: NSObject {
         
         if sc.count > 0 || rc.count > 0 {
             self.delegate?.didReceiveChanges?(self, sectionChanges: sc, rowChanges: rc)
-        }
-        
-        for (_,value) in self.keyCollectionObserver.storage {
-            if self.databaseConnection.hasChangeForKey(value.key, inCollection: value.collection, inNotifications: notifications) {
-                self.delegate?.didReceiveChanges?(self, key: value.key, collection: value.collection)
-            }
         }
     }
 }

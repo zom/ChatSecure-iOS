@@ -64,6 +64,7 @@
 #import "OTRXMPPBudyTimers.h"
 #import "OTRXMPPError.h"
 #import "OTRXMPPManager_Private.h"
+#import "UIImage+ChatSecure.h"
 @import OTRAssets;
 #import "XMPPIQ+XEP_0357.h"
 
@@ -509,7 +510,45 @@ NSString *const OTRXMPPLoginErrorKey = @"OTRXMPPLoginErrorKey";
     return YES;
 }
 
-#pragma mark Public Methods
+- (void)setAvatar:(UIImage *)avatarImage completion:(void (^)(BOOL success))completion
+{
+    if (!avatarImage) {
+        completion(NO);
+        return;
+    }
+    
+    __block UIImage *newImage = avatarImage;
+    
+    
+    dispatch_async(self.workQueue, ^{
+        
+        //Square crop & Resize image
+        newImage = [UIImage otr_prepareForAvatarUpload:newImage maxSize:120.0];
+        //jpeg compression
+        NSData *data = UIImageJPEGRepresentation(newImage, 0.6);
+        
+        //Save new avatar right away to update UI
+        
+        [self.databaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            OTRXMPPAccount *account = [[OTRXMPPAccount fetchObjectWithUniqueID:self.account.uniqueId transaction:transaction] copy];
+            account.avatarData = data;
+            [account saveWithTransaction:transaction];
+        }];
+        
+        self.changeAvatar = [[OTRXMPPChangeAvatar alloc] initWithPhotoData:data
+                                                       xmppvCardTempModule:self.xmppvCardTempModule];
+        
+        __weak typeof(self) weakSelf = self;
+        [self.changeAvatar updatePhoto:^(BOOL success) {
+            typeof(weakSelf) strongSelf = weakSelf;
+            if (completion) {
+                completion(success);
+            }
+            strongSelf.changeAvatar = nil;
+        }];
+    });
+    
+}
 
 - (void)changePassword:(NSString *)newPassword completion:(void (^)(BOOL,NSError*))completion {
     if (!completion) {

@@ -44,6 +44,8 @@
 @property (nonatomic, strong) OTRXMPPMessageStatusModule *messageStatusModule;
 @property (nonatomic, strong) OTRStreamManagementDelegate *streamManagementDelegate;
 
+@property (nonatomic, strong) OTRXMPPChangeAvatar *changeAvatar;
+
 - (void)setupStream;
 - (void)teardownStream;
 

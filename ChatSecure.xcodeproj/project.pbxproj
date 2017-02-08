@@ -11,6 +11,7 @@
 		6308D1451CA20762002F5F30 /* Pods-ChatSecureCorePods-ChatSecure-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6308D1441CA20762002F5F30 /* Pods-ChatSecureCorePods-ChatSecure-acknowledgements.plist */; };
 		631098B11BD6FED000494A47 /* YapDatabse+ChatSecure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631098B01BD6FED000494A47 /* YapDatabse+ChatSecure.swift */; };
 		631E1E9F1C583B6900E263CD /* ChatSecureCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9227C2A1BA7952100B5E1D0 /* ChatSecureCore.framework */; };
+		632BF0411E38365000C2D0C2 /* OTRXMPPChangeAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632BF03F1E3817A400C2D0C2 /* OTRXMPPChangeAvatar.swift */; };
 		633107201A16D1A300C17BAE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 633106661A16D1A300C17BAE /* LaunchScreen.xib */; };
 		6331072B1A16D1F200C17BAE /* DemoImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 633107291A16D1F200C17BAE /* DemoImages.xcassets */; };
 		6331072C1A16D1F200C17BAE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6331072A1A16D1F200C17BAE /* Images.xcassets */; };
@@ -439,6 +440,7 @@
 		63039E971B0D43FE007C9978 /* OTRXMPPServerListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OTRXMPPServerListViewController.m; sourceTree = "<group>"; };
 		6308D1441CA20762002F5F30 /* Pods-ChatSecureCorePods-ChatSecure-acknowledgements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Pods-ChatSecureCorePods-ChatSecure-acknowledgements.plist"; path = "Pods/Target Support Files/Pods-ChatSecureCorePods-ChatSecure/Pods-ChatSecureCorePods-ChatSecure-acknowledgements.plist"; sourceTree = "<group>"; };
 		631098B01BD6FED000494A47 /* YapDatabse+ChatSecure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "YapDatabse+ChatSecure.swift"; sourceTree = "<group>"; };
+		632BF03F1E3817A400C2D0C2 /* OTRXMPPChangeAvatar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTRXMPPChangeAvatar.swift; sourceTree = "<group>"; };
 		633104D51A169EC800C17BAE /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		633104D81A169F0E00C17BAE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		633104DA1A169FF900C17BAE /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -998,6 +1000,7 @@
 				634905AF1BD05E3900347FE2 /* OTRYapViewHandler.swift */,
 				63AB1A061C0D116A005FA351 /* OTRSplitViewCoordinator.swift */,
 				6334C0161E247E5100BA9359 /* OTRXMPPChangePasswordManager.swift */,
+				632BF03F1E3817A400C2D0C2 /* OTRXMPPChangeAvatar.swift */,
 				633105321A16D1A300C17BAE /* XMPP */,
 			);
 			path = Controllers;
@@ -1965,7 +1968,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6323C7041E396D3D00D0FB42 /* portrait.jpg in Resources */,
 				635FCC8A1D1B5A35008F903C /* OTRResources.bundle in Resources */,
+				6323C7031E396D3D00D0FB42 /* landscape.jpg in Resources */,
+				6323C7051E396D3D00D0FB42 /* small.jpg in Resources */,
 				63DDD8BA1A9E9BD900C0A918 /* samples in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2170,6 +2176,7 @@
 				D93DDA791BA79A2400CD8331 /* NSURL+ChatSecure.m in Sources */,
 				634E68BD1BAB887200DC6B25 /* PushController.swift in Sources */,
 				D93DDA7A1BA79A2400CD8331 /* UIActionSheet+ChatSecure.m in Sources */,
+				632BF0411E38365000C2D0C2 /* OTRXMPPChangeAvatar.swift in Sources */,
 				D93DDA7B1BA79A2400CD8331 /* UIActivity+ChatSecure.m in Sources */,
 				D93DDA7C1BA79A2400CD8331 /* UIActivityViewController+ChatSecure.m in Sources */,
 				639C352B1C3DDDDE00132330 /* OTRXMPPBuddyManager.m in Sources */,
