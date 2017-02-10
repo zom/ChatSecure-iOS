@@ -54,6 +54,7 @@
 #import "OTRXMPPError.h"
 #import "OTRXMPPManager_Private.h"
 #import "OTRBuddyCache.h"
+#import "UIImage+ChatSecure.h"
 @import OTRAssets;
 
 NSString *const OTRXMPPRegisterSucceededNotificationName = @"OTRXMPPRegisterSucceededNotificationName";
@@ -105,11 +106,15 @@ NSString *const OTRXMPPLoginErrorKey = @"OTRXMPPLoginErrorKey";
 #pragma mark Private
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+- (OTRXMPPStream*) newStream {
+    return [[OTRXMPPStream alloc] init];
+}
+
 - (void)setupStream
 {
 	NSAssert(_xmppStream == nil, @"Method setupStream invoked multiple times");
     
-	_xmppStream = [[XMPPStream alloc] init];
+	_xmppStream = [self newStream];
 
     //Used to fetch correct account from XMPPStream in delegate methods especailly
     self.xmppStream.tag = self.account.uniqueId;
@@ -257,11 +262,14 @@ NSString *const OTRXMPPLoginErrorKey = @"OTRXMPPLoginErrorKey";
     [self.messageStatusModule activate:self.xmppStream];
     
     //OMEMO
-    self.omemoSignalCoordinator = [[OTROMEMOSignalCoordinator alloc] initWithAccountYapKey:self.account.uniqueId databaseConnection:self.databaseConnection error:nil];
-    _omemoModule = [[OMEMOModule alloc] initWithOMEMOStorage:self.omemoSignalCoordinator xmlNamespace:OMEMOModuleNamespaceConversationsLegacy];
-    [self.omemoModule addDelegate:self.omemoSignalCoordinator delegateQueue:self.omemoSignalCoordinator.workQueue];
-
-    [self.omemoModule activate:self.xmppStream];
+    if ([[OTRAppDelegate appDelegate].theme enableOMEMO]) {
+        self.omemoSignalCoordinator = [[OTROMEMOSignalCoordinator alloc] initWithAccountYapKey:self.account.uniqueId databaseConnection:self.databaseConnection error:nil];
+        _omemoModule = [[OMEMOModule alloc] initWithOMEMOStorage:self.omemoSignalCoordinator xmlNamespace:OMEMOModuleNamespaceConversationsLegacy];
+        [self.omemoModule addDelegate:self.omemoSignalCoordinator delegateQueue:self.omemoSignalCoordinator.workQueue];
+        
+        [self.omemoModule activate:self.xmppStream];
+    }
+    
 }
 
 - (void)teardownStream
@@ -475,6 +483,68 @@ NSString *const OTRXMPPLoginErrorKey = @"OTRXMPPLoginErrorKey";
     return YES;
 }
 
+#pragma mark Public Methods
+
+- (void)setAvatar:(UIImage *)avatarImage completion:(void (^)(BOOL success))completion
+{
+    if (!avatarImage) {
+        completion(NO);
+        return;
+    }
+    
+    __block UIImage *newImage = avatarImage;
+    
+    
+    dispatch_async(self.workQueue, ^{
+        
+        //Square crop & Resize image
+        newImage = [UIImage otr_prepareForAvatarUpload:newImage maxSize:120.0];
+        //jpeg compression
+        NSData *data = UIImageJPEGRepresentation(newImage, 0.6);
+        
+        //Save new avatar right away to update UI
+        
+        [self.databaseConnection asyncReadWriteWithBlock:^(YapDatabaseReadWriteTransaction * _Nonnull transaction) {
+            OTRXMPPAccount *account = [[OTRXMPPAccount fetchObjectWithUniqueID:self.account.uniqueId transaction:transaction] copy];
+            account.avatarData = data;
+            [account saveWithTransaction:transaction];
+        }];
+        
+        self.changeAvatar = [[OTRXMPPChangeAvatar alloc] initWithPhotoData:data
+                                                       xmppvCardTempModule:self.xmppvCardTempModule];
+        
+        __weak typeof(self) weakSelf = self;
+        [self.changeAvatar updatePhoto:^(BOOL success) {
+            typeof(weakSelf) strongSelf = weakSelf;
+            if (completion) {
+                completion(success);
+            }
+            strongSelf.changeAvatar = nil;
+        }];
+    });
+    
+}
+
+- (void)changePassword:(NSString *)newPassword completion:(void (^)(BOOL,NSError*))completion {
+    if (!completion) {
+        return;
+    }
+    
+    if (!self.xmppStream.isAuthenticated || [newPassword length] == 0) {
+        completion(NO,nil);
+    }
+    
+    self.changePasswordManager = [[OTRXMPPChangePasswordManager alloc] initWithNewPassword:newPassword xmppStream:self.xmppStream completion:^(BOOL success, NSError * _Nullable error) {
+        
+        if (success) {
+            self.account.password = newPassword;
+        }
+        self.changePasswordManager = nil;
+        completion(success,error);
+    }];
+    [self.changePasswordManager changePassword];
+    
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark XMPPStream Delegate
@@ -561,7 +631,7 @@ NSString *const OTRXMPPLoginErrorKey = @"OTRXMPPLoginErrorKey";
 {
 	DDLogVerbose(@"%@: %@", THIS_FILE, THIS_METHOD);
     if ([sender supportsStreamManagement] && ![self.streamManagement didResume]) {
-        [self.streamManagement enableStreamManagementWithResumption:YES maxTimeout:300];
+        [self.streamManagement enableStreamManagementWithResumption:YES maxTimeout:0];
     }
     
     self.connectionStatus = OTRProtocolConnectionStatusConnected;
@@ -926,14 +996,13 @@ NSString *const OTRXMPPLoginErrorKey = @"OTRXMPPLoginErrorKey";
 
 -(void)sendChatState:(OTRChatState)chatState withBuddyID:(NSString *)buddyUniqueId
 {
-    
-    
     dispatch_async(self.workQueue, ^{
         
         __block OTRXMPPBuddy *buddy = nil;
         [[OTRDatabaseManager sharedInstance].readOnlyDatabaseConnection readWithBlock:^(YapDatabaseReadTransaction *transaction) {
             buddy = [OTRXMPPBuddy fetchObjectWithUniqueID:buddyUniqueId transaction:transaction];
         }];
+        if (!buddy) { return; }
         
         if (buddy.lastSentChatState == chatState) {
             return;

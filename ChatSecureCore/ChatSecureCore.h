@@ -64,11 +64,13 @@ FOUNDATION_EXPORT const unsigned char ChatSecureCoreVersionString[];
 
 
 #import "NSURL+ChatSecure.h"
+#import "UIImage+ChatSecure.h"
 #import "OTRProtocolManager.h"
 #import "OTRInviteViewController.h"
 #import "OTRYapMessageSendAction.h"
 #import "OTRBuddyInfoCell.h"
 #import "NSString+ChatSecure.h"
+#import "OTRXMPPManager.h"
 #import "OTRMessageEncryptionInfo.h"
 #import "OTRMessage.h"
 #import "OTRChooseAccountViewController.h"

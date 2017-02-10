@@ -725,7 +725,7 @@
     },
     "USE_CAMERA_STRING" : {
         "comment": "Label for button to take a photo from camera",
-        "string": "Take Photo"
+        "string": "Camera"
     },
     "PHOTO_LIBRARY_STRING" : {
         "comment": "Label for button to open up photo library and choose photo",
@@ -786,6 +786,10 @@
     "SOMEONE_STRING": {
         "comment": "A placeholder for a buddy's username like Someone wants to chat.",
         "string": "Someone"
+    },
+    "GROUP_CHAT_STRING": {
+        "comment": "a subtitle label for a group chat",
+        "string": "Group Chat"
     },
     "GROUP_NAME_STRING": {
         "comment": "The title for the view to enter a group chat name or label",
