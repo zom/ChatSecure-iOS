@@ -23,6 +23,8 @@ open class OTRServerDeprecation: NSObject {
     static let allDeprecatedServers:[String:OTRServerDeprecation] = [
         dukgo.domain:dukgo,
     ]
+    static var migratedJids:[String] = []
+    private static let dispatchQueue = DispatchQueue(label:"DeviceControllerQueue")
     
     open static func isDeprecated(server: String) -> Bool {
         return deprecationInfo(withServer: server) != nil
@@ -30,5 +32,26 @@ open class OTRServerDeprecation: NSObject {
     
     open static func deprecationInfo(withServer server:String) -> OTRServerDeprecation? {
         return allDeprecatedServers[server.lowercased()];
+    }
+    
+    public static func hasMigrated(account: OTRXMPPAccount) -> Bool {
+        var ret:Bool = false
+        dispatchQueue.sync {
+            if let bareJid:String = account.bareJID?.bare() {
+                ret = migratedJids.contains(bareJid)
+            }
+        }
+        return ret
+    }
+    
+    public static func setAccount(account: OTRXMPPAccount, migrated:Bool) {
+        dispatchQueue.sync {
+            guard let bareJid:String = account.bareJID?.bare() else { return }
+            if migrated, !migratedJids.contains(bareJid) {
+                migratedJids.append(bareJid)
+            } else if !migrated, let idx = migratedJids.index(of: bareJid) {
+                migratedJids.remove(at: idx)
+            }
+        }
     }
 }

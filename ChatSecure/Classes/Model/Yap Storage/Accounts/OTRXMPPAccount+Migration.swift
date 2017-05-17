@@ -11,7 +11,7 @@ import Foundation
 public extension OTRXMPPAccount {
 
     public var needsMigration: Bool {
-        guard let jid = bareJID else { return false }
+        guard !OTRServerDeprecation.hasMigrated(account: self), let jid = bareJID else { return false }
         if OTRServerDeprecation.isDeprecated(server: jid.domain) {
             if !autologin, let xmpp = OTRProtocolManager.shared.protocol(for: self) as? OTRXMPPManager,
                 xmpp.connectionStatus == .disconnected {
@@ -20,5 +20,9 @@ public extension OTRXMPPAccount {
             return !self.isArchived
         }
         return false
+    }
+    
+    public func setHasMigrated(_ migrated:Bool) {
+        OTRServerDeprecation.setAccount(account: self, migrated: migrated)
     }
 }
