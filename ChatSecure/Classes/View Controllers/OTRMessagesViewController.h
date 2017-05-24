@@ -12,6 +12,7 @@
 #import "OTROutgoingMessage.h"
 @import OTRKit;
 @import JSQMessagesViewController;
+@import XMPPFramework;
 
 @class OTRBuddy, OTRXMPPManager, OTRAccount, YapDatabaseConnection, OTRYapDatabaseObject, MessagesViewControllerState;
 
@@ -63,5 +64,8 @@
 
 /** override this method to customize what should be shown at the beginning of the message status */
 - (nullable NSAttributedString *) encryptionStatusStringForMesage:(nonnull id<OTRMessageProtocol>)message;
+
+/** Show a header prompting user to switch the chat over to another friend account */
+- (void)showJIDForwardingHeaderWithNewJID:(XMPPJID *)newJid;
 
 @end

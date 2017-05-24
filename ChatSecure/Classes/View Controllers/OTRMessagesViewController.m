@@ -1851,10 +1851,20 @@ heightForCellBottomLabelAtIndexPath:(NSIndexPath *)indexPath
         showHeader = YES;
     }
     
-    if (showHeader && self.jidForwardingHeaderView == nil) {
+    if (showHeader) {
+        [self showJIDForwardingHeaderWithNewJID:forwardingJid];
+    } else if (!showHeader && self.jidForwardingHeaderView != nil) {
+        self.topContentAdditionalInset = 0;
+        [self.jidForwardingHeaderView removeFromSuperview];
+        self.jidForwardingHeaderView = nil;
+    }
+}
+
+- (void)showJIDForwardingHeaderWithNewJID:(XMPPJID *)newJid {
+    if (self.jidForwardingHeaderView == nil) {
         UINib *nib = [UINib nibWithNibName:@"MigratedBuddyHeaderView" bundle:OTRAssets.resourcesBundle];
         MigratedBuddyHeaderView *header = (MigratedBuddyHeaderView*)[nib instantiateWithOwner:self options:nil][0];
-        [header setForwardingJID:forwardingJid];
+        [header setForwardingJID:newJid];
         [header.titleLabel setText:MIGRATED_BUDDY_STRING()];
         [header.descriptionLabel setText:MIGRATED_BUDDY_INFO_STRING()];
         [header.switchButton setTitle:MIGRATED_BUDDY_SWITCH() forState:UIControlStateNormal];
@@ -1864,10 +1874,6 @@ heightForCellBottomLabelAtIndexPath:(NSIndexPath *)indexPath
         [self.view bringSubviewToFront:header];
         self.jidForwardingHeaderView = header;
         [self.view setNeedsLayout];
-    } else if (!showHeader && self.jidForwardingHeaderView != nil) {
-        self.topContentAdditionalInset = 0;
-        [self.jidForwardingHeaderView removeFromSuperview];
-        self.jidForwardingHeaderView = nil;
     }
 }
 
