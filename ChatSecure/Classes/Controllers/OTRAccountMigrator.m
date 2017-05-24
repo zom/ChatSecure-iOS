@@ -39,9 +39,8 @@
 }
 
 - (BOOL) areBothAccountsAreOnline {
-    return YES;
-//    BOOL areConnected = [OTRProtocolManager.shared isAccountConnected:self.oldAccount] && [OTRProtocolManager.shared isAccountConnected:self.migratedAccount];
-//    return areConnected;
+    BOOL areConnected = [OTRProtocolManager.shared isAccountConnected:self.oldAccount] && [OTRProtocolManager.shared isAccountConnected:self.migratedAccount];
+    return areConnected;
 }
 
 - (void) loginAccountsIfNeeded {
