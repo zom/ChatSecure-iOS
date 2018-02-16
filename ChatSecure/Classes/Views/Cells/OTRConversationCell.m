@@ -128,8 +128,10 @@
         self.conversationLabel.text = [NSString stringWithFormat:@"⚠️ %@", messageText];
     } else if (mediaItem) {
         self.conversationLabel.text = [messageTextPrefix stringByAppendingString:mediaItem.displayText];
-    } else {
+    } else if (messageText) {
         self.conversationLabel.text = [messageTextPrefix stringByAppendingString:messageText];
+    } else {
+        self.conversationLabel.text = nil;
     }
     if (unreadMessages > 0) {
         //unread message
